@@ -1,0 +1,15 @@
+{
+  "googleCloud": {
+    "projectId": "validador-psr",
+    "apiKey": "YOUR_PUBLIC_API_KEY_HERE",
+    "clientId": "YOUR_CLIENT_ID_HERE.apps.googleusercontent.com",
+    "authUri": "https://accounts.google.com/o/oauth2/auth",
+    "tokenUri": "https://oauth2.googleapis.com/token",
+    "universe_domain": "googleapis.com"
+  },
+  "app": {
+    "name": "Validador PSR TAC",
+    "description": "Validador de Garantias PSR",
+    "version": "1.0.0"
+  }
+}
