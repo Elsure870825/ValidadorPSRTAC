@@ -24,7 +24,7 @@ def cargar_datos_sheets():
     data = hoja.get_all_records()
     df = pd.DataFrame(data)
     
-    # Limpieza automática de columnas (evita fallos por espacios en blanco ocultos)
+    # Limpieza de espacios fantasmas en los títulos
     df.columns = df.columns.str.strip()
     
     return df
@@ -40,14 +40,14 @@ try:
     st.markdown("---")
     
     # Entrada de búsqueda interactiva
-    busqueda = st.text_input("Ingresa el número telefónico o Folio PISA a consultar:", placeholder="Ej. 2888822252")
+    busqueda = st.text_input("Ingresa el número telefónico o Folio PISA a consultar:", placeholder="Ej. 2291555848")
     
     if busqueda:
         busqueda_clean = str(busqueda).strip()
         
-        # CORRECCIÓN AQUÍ: Ahora busca bajo la columna 'TELEFONO' exacta
+        # Mapeo exacto según tu captura: 'Telefono' y 'Folio PISA'
         resultado = df_base[
-            df_base['TELEFONO'].astype(str).str.contains(busqueda_clean) | 
+            df_base['Telefono'].astype(str).str.contains(busqueda_clean) | 
             df_base['Folio PISA'].astype(str).str.contains(busqueda_clean)
         ]
         
@@ -56,28 +56,27 @@ try:
             hoy = datetime.now()
             
             for index, fila in resultado.iterrows():
-                # Extraer variables requeridas (se limpian los nombres por seguridad)
-                recurso = fila.get('Recurso', 'SIN RECURSO ASIGNADO')
-                telefono = fila.get('TELEFONO', 'SIN NÚMERO')
+                # Variables adaptadas a tus columnas reales
+                tecnico = fila.get('Tecnico', 'SIN TÉCNICO ASIGNADO')
+                telefono = fila.get('Telefono', 'SIN NÚMERO')
                 fecha_str = str(fila.get('Fecha', '')).strip()
                 folio = fila.get('Folio PISA', 'N/A')
                 
                 # Evaluación de la Garantía (60 días posteriores a la fecha del registro)
                 es_garantia = False
-                fecha_formateada = "Fecha no válida"
                 dias_restantes = 0
 
                 if fecha_str:
                     try:
+                        # Se asume formato DD/MM/YYYY como '24/6/2026'
                         fecha_dt = datetime.strptime(fecha_str, "%d/%m/%Y")
-                        fecha_formateada = fecha_dt.strftime("%d de %B, %Y")
                         fecha_limite_garantia = fecha_dt + timedelta(days=60)
                         
                         if fecha_dt <= hoy <= fecha_limite_garantia:
                             es_garantia = True
                             dias_restantes = (fecha_limite_garantia - hoy).days
                     except ValueError:
-                        fecha_formateada = f"{fecha_str} (Formato no reconocido)"
+                        pass
 
                 # Tarjeta móvil adaptable estructurada por cada registro
                 with st.status(f"📞 Teléfono: {telefono} | Folio: {folio}", expanded=True, state="complete"):
@@ -89,17 +88,15 @@ try:
                     
                     col1, col2 = st.columns(2)
                     with col1:
-                        st.metric(label="👤 Técnico", value=recurso.split()[0] if recurso else "N/A")
+                        st.metric(label="👤 Técnico", value=str(tecnico).split()[0] if tecnico else "N/A")
                     with col2:
-                        st.metric(label="📅 Registro", value=fecha_dt.strftime("%d/%m/%Y") if fecha_str else "N/A")
+                        st.metric(label="📅 Registro", value=fecha_str if fecha_str else "N/A")
                         
-                    st.caption(f"Asignación completa registrada: {recurso}")
+                    st.caption(f"Asignación completa registrada: {tecnico}")
         else:
             st.error("❌ No se encontró ningún registro que coincida con la búsqueda.")
             
 except Exception as e:
     st.error("🚨 Error al procesar los datos de la consulta.")
-    st.info("Verifica que las columnas 'TELEFONO', 'Folio PISA', 'Fecha' y 'Recurso' existan en la fila 1 de tu hoja.")
-    st.exception(e)
-    st.info("Asegúrate de que la cuenta de servicio de Google tenga permisos de lector en tu hoja.")
+    st.info("Verifica que las columnas coincidan exactamente con tu Google Sheet.")
     st.exception(e)
