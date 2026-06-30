@@ -30,9 +30,9 @@ def cargar_datos_sheets():
     return df
 
 # Configuración Web optimizada para teléfonos celulares
-st.set_page_config(page_title="Validador de Garantías PSR", page_icon="🛡️", layout="centered")
-st.title("🛡️ Buscador y Validador de Garantías PSR")
-st.caption("Consulta rápida de estatus de garantías PSR.")
+st.set_page_config(page_title="Validador de Garantías", page_icon="🛡️", layout="centered")
+st.title("🛡️ Buscador y Validador de Garantías")
+st.caption("Consulta rápida de estatus de garantías.")
 
 try:
     df_base = cargar_datos_sheets()
