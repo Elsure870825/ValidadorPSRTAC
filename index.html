@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -27,84 +27,140 @@
             overflow: hidden;
         }
 
+        /* ========== HEADER ========== */
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 50px 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.1)"/></svg>');
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.8em;
             margin-bottom: 10px;
-            font-weight: 700;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 1.2em;
+            opacity: 0.95;
             margin-bottom: 5px;
         }
 
         .header .subtitle {
-            font-size: 0.95em;
-            opacity: 0.8;
+            font-size: 1em;
+            opacity: 0.85;
         }
 
+        /* ========== CONTENT ========== */
         .content {
-            padding: 40px 30px;
+            padding: 50px 40px;
         }
 
+        .info-banner {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-banner-icon {
+            font-size: 2em;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .info-banner-text {
+            color: #333;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-banner-text strong {
+            color: #667eea;
+        }
+
+        /* ========== SEARCH SECTION ========== */
         .search-section {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .search-section label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-bottom: 12px;
+            font-weight: 700;
             color: #333;
-            font-size: 1.05em;
+            font-size: 1.1em;
         }
 
         .search-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .search-container input {
             flex: 1;
-            min-width: 200px;
-            padding: 14px 18px;
+            min-width: 220px;
+            padding: 15px 18px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1.05em;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .search-container input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+
+        .search-container input::placeholder {
+            color: #bbb;
         }
 
         .search-container button {
-            padding: 14px 35px;
+            padding: 15px 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 1.05em;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .search-container button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
         .search-container button:active {
@@ -117,13 +173,65 @@
             transform: none;
         }
 
+        /* ========== MESSAGE ========== */
+        .message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .message.loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #17a2b8;
+        }
+
+        .message.info {
+            background: #d6d8db;
+            color: #383d41;
+            border-left-color: #383d41;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== RESULT SECTION ========== */
         .result-section {
             display: none;
             margin-top: 30px;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 12px;
             border-left: 5px solid #667eea;
             background: #f8f9ff;
+            animation: slideDown 0.4s ease-out;
         }
 
         .result-section.show {
@@ -132,26 +240,26 @@
 
         .result-section.success {
             border-left-color: #28a745;
-            background: #f0f9f4;
+            background: #f0fdf4;
         }
 
         .result-section.error {
             border-left-color: #dc3545;
-            background: #fdf3f5;
+            background: #fef2f2;
         }
 
         .result-section.warning {
             border-left-color: #ffc107;
-            background: #fffbf0;
+            background: #fffbeb;
         }
 
         .result-title {
-            font-size: 1.3em;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .result-section.success .result-title {
@@ -166,106 +274,122 @@
             color: #ffc107;
         }
 
-        .result-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        /* ========== RESULT ITEMS ========== */
+        .result-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 20px;
         }
 
-        .result-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
+        .result-item {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .result-item-label {
-            font-weight: 600;
+            font-weight: 700;
             color: #666;
-            font-size: 0.95em;
-            margin-bottom: 5px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
         .result-item-value {
-            font-size: 1.15em;
+            font-size: 1.2em;
             color: #333;
             word-break: break-word;
+            font-weight: 600;
         }
 
+        .result-item-full {
+            grid-column: 1 / -1;
+        }
+
+        /* ========== GUARANTEE BADGE ========== */
         .guarantee-badge {
             display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 1em;
-            margin-top: 10px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.1em;
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .guarantee-badge.active {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: #155724;
             border: 2px solid #28a745;
         }
 
         .guarantee-badge.expired {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             color: #721c24;
             border: 2px solid #dc3545;
         }
 
+        /* ========== DAYS INFO ========== */
         .days-info {
             font-size: 0.9em;
             color: #666;
-            margin-top: 5px;
-            font-style: italic;
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 6px;
+            font-weight: 500;
         }
 
-        .message {
-            padding: 15px 20px;
+        /* ========== NO RESULT ========== */
+        .no-result {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .no-result-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+
+        .no-result p {
+            color: #666;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        .no-result strong {
+            color: #dc3545;
+        }
+
+        /* ========== ADDITIONAL INFO ========== */
+        .additional-info {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
             border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideDown 0.3s ease-out;
+            border-left: 4px solid #667eea;
         }
 
-        .message.show {
-            display: block;
+        .additional-info p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.7;
         }
 
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 4px solid #28a745;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left: 4px solid #dc3545;
-        }
-
-        .message.loading {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left: 4px solid #17a2b8;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        /* ========== LOADING SPINNER ========== */
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-top-color: #667eea;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -274,33 +398,65 @@
             to { transform: rotate(360deg); }
         }
 
+        /* ========== FOOTER ========== */
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 30px 40px;
             color: #999;
             font-size: 0.9em;
             border-top: 1px solid #eee;
-            margin-top: 20px;
+            background: #f8f9fa;
         }
 
-        .no-result {
+        .footer-content {
+            line-height: 1.8;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== STATISTICS ========== */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            padding: 30px;
-            color: #dc3545;
         }
 
-        .no-result-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
+        .stat-number {
+            font-size: 2em;
+            font-weight: 800;
         }
 
-        @media (max-width: 600px) {
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
             .header h1 {
-                font-size: 1.8em;
+                font-size: 2em;
             }
 
             .content {
-                padding: 25px 20px;
+                padding: 30px 20px;
             }
 
             .search-container {
@@ -310,22 +466,71 @@
             .search-container button {
                 width: 100%;
             }
+
+            .result-items {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .info-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .result-section {
+                padding: 20px;
+            }
+
+            .search-container input {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
-            <h1>🛡️ Validador de Garantías</h1>
-            <p>PSR TAC - Sistema de Verificación</p>
-            <p class="subtitle">Consulta el estado de garantía de tu recurso</p>
+            <div class="header-content">
+                <h1>🛡️ Validador de Garantías</h1>
+                <p>PSR TAC - Sistema de Verificación</p>
+                <p class="subtitle">Consulta el estado de garantía de tu recurso de manera rápida y segura</p>
+            </div>
         </div>
 
+        <!-- CONTENT -->
         <div class="content">
+            <!-- MESSAGES -->
             <div id="message"></div>
 
+            <!-- INFO BANNER -->
+            <div class="info-banner">
+                <div class="info-banner-icon">ℹ️</div>
+                <div class="info-banner-text">
+                    <strong>Importante:</strong> Ingresa el número de tu recurso para verificar el estado actual de garantía. El período de garantía es de <strong>60 días naturales</strong> a partir de la fecha de registro.
+                </div>
+            </div>
+
+            <!-- SEARCH SECTION -->
             <div class="search-section">
-                <label for="numeroInput">Ingresa el Número de Recurso:</label>
+                <label for="numeroInput">🔍 Ingresa el Número de Recurso:</label>
                 <div class="search-container">
                     <input 
                         type="text" 
@@ -333,126 +538,173 @@
                         placeholder="Ej: 123456"
                         onkeypress="handleKeyPress(event)"
                     >
-                    <button onclick="buscar()">Buscar</button>
+                    <button onclick="buscar()">
+                        <span>Buscar</span>
+                    </button>
                 </div>
             </div>
 
+            <!-- RESULT SECTION -->
             <div id="resultSection" class="result-section">
                 <div class="result-title" id="resultTitle"></div>
                 <div id="resultContent"></div>
             </div>
 
+            <!-- FOOTER -->
             <div class="footer">
-                <p>Datos consultados desde el registro oficial de PSR TAC</p>
+                <div class="footer-content">
+                    <p>📊 Datos consultados desde el registro oficial de PSR TAC</p>
+                    <p style="margin-top: 10px; font-size: 0.85em;">Última actualización: <span id="lastUpdate">Cargando...</span></p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // ========== CONFIGURACIÓN ========== 
         const SPREADSHEET_ID = '10qZbXp4ayXjtITenLXaj7_E2y176O7JB28k28EcmbbM';
         const SHEET_NAME = 'Sheet1';
-        const API_KEY = 'AIzaSyDaProFeaturePlaceholder'; // Se puede dejar vacío para hojas públicas
+        // Para hojas públicas, la API Key es opcional. Sino, reemplaza con tu API Key:
+        const API_KEY = ''; // Déjalo vacío si la hoja es pública, o agrega tu API Key de Google Cloud
 
-        // Función para mostrar mensajes
-        function mostrarMensaje(texto, tipo) {
+        let cachedData = null;
+        let lastDataFetch = null;
+
+        // ========== FUNCIONES DE UTILIDAD ========== 
+
+        /**
+         * Mostrar mensajes al usuario
+         */
+        function mostrarMensaje(texto, tipo = 'info', duracion = 5000) {
             const messageDiv = document.getElementById('message');
             messageDiv.className = `message ${tipo} show`;
             messageDiv.textContent = texto;
             
-            setTimeout(() => {
-                messageDiv.classList.remove('show');
-            }, 5000);
+            if (duracion > 0) {
+                setTimeout(() => {
+                    messageDiv.classList.remove('show');
+                }, duracion);
+            }
         }
 
-        // Manejar Enter en el input
+        /**
+         * Manejar Enter en el input
+         */
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 buscar();
             }
         }
 
-        // Función para calcular días transcurridos
-        function calcularDiasTranscurridos(fecha) {
-            const fechaRegistro = new Date(fecha);
-            const hoy = new Date();
-            
-            // Establecer horas a 00:00:00 para comparar solo fechas
-            fechaRegistro.setHours(0, 0, 0, 0);
-            hoy.setHours(0, 0, 0, 0);
-            
-            const diferencia = hoy - fechaRegistro;
-            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-            
-            return dias;
+        /**
+         * Calcular días transcurridos entre dos fechas
+         */
+        function calcularDiasTranscurridos(fechaStr) {
+            try {
+                const fechaRegistro = new Date(fechaStr);
+                const hoy = new Date();
+                
+                fechaRegistro.setHours(0, 0, 0, 0);
+                hoy.setHours(0, 0, 0, 0);
+                
+                const diferencia = hoy - fechaRegistro;
+                const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                
+                return dias;
+            } catch (error) {
+                console.error('Error al calcular días:', error);
+                return -1;
+            }
         }
 
-        // Función para formatear fecha
+        /**
+         * Formatear fecha a formato legible
+         */
         function formatearFecha(fechaStr) {
-            const fecha = new Date(fechaStr);
+            try {
+                const fecha = new Date(fechaStr);
+                return fecha.toLocaleDateString('es-ES', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    weekday: 'long'
+                });
+            } catch (error) {
+                console.error('Error al formatear fecha:', error);
+                return fechaStr;
+            }
+        }
+
+        /**
+         * Formatear fecha a formato corto para última actualización
+         */
+        function formatearFechaCorta(fecha) {
             return fecha.toLocaleDateString('es-ES', { 
                 year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+                month: '2-digit', 
+                day: '2-digit'
+            }) + ' ' + fecha.toLocaleTimeString('es-ES', {
+                hour: '2-digit',
+                minute: '2-digit'
             });
         }
 
-        // Función principal de búsqueda
-        async function buscar() {
-            const numero = document.getElementById('numeroInput').value.trim();
-
-            if (!numero) {
-                mostrarMensaje('Por favor ingresa un número de recurso', 'error');
-                return;
-            }
-
-            const btnBuscar = event.target;
-            btnBuscar.disabled = true;
-            btnBuscar.innerHTML = '<span class="loading-spinner"></span> Buscando...';
-
-            mostrarMensaje('Consultando base de datos...', 'loading');
-
+        /**
+         * Obtener datos del Google Sheet
+         */
+        async function obtenerDatosDelSheet() {
             try {
-                // Obtener datos del Google Sheet
                 const range = `${SHEET_NAME}!A:D`;
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}`;
+                const urlParams = new URLSearchParams({
+                    key: API_KEY
+                });
+
+                let url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}`;
+                if (API_KEY) {
+                    url += `?key=${API_KEY}`;
+                }
 
                 const response = await fetch(url);
 
                 if (!response.ok) {
-                    throw new Error('Error al conectar con la base de datos');
+                    if (response.status === 403) {
+                        throw new Error('Acceso denegado. Verifica que la hoja sea pública o que la API Key sea válida.');
+                    } else if (response.status === 404) {
+                        throw new Error('Google Sheet no encontrado. Verifica el ID de la hoja.');
+                    } else {
+                        throw new Error(`Error al conectar con Google Sheets: ${response.status}`);
+                    }
                 }
 
                 const data = await response.json();
                 const rows = data.values || [];
 
                 if (rows.length === 0) {
-                    throw new Error('La base de datos está vacía');
+                    throw new Error('La base de datos está vacía. Verifica que la hoja tenga datos.');
                 }
 
-                // Buscar el registro
-                const resultado = buscarEnDatos(numero, rows);
+                // Cachear datos
+                cachedData = rows;
+                lastDataFetch = new Date();
+                document.getElementById('lastUpdate').textContent = formatearFechaCorta(lastDataFetch);
 
-                if (resultado) {
-                    mostrarResultado(resultado);
-                    mostrarMensaje('✅ Búsqueda completada', 'success');
-                } else {
-                    mostrarNoEncontrado(numero);
-                    mostrarMensaje('❌ No se encontró el número solicitado', 'error');
-                }
+                return rows;
 
             } catch (error) {
-                console.error('Error:', error);
-                mostrarMensaje(`Error: ${error.message}`, 'error');
-            } finally {
-                btnBuscar.disabled = false;
-                btnBuscar.textContent = 'Buscar';
+                console.error('Error al obtener datos:', error);
+                throw error;
             }
         }
 
-        // Función para buscar en los datos
+        /**
+         * Buscar un registro en los datos
+         */
         function buscarEnDatos(numero, rows) {
             // Saltar encabezado si existe
-            const startIndex = rows[0]?.includes('Número') ? 1 : 0;
+            const startIndex = rows[0]?.some(cell => 
+                String(cell).toLowerCase().includes('número') || 
+                String(cell).toLowerCase().includes('numero')
+            ) ? 1 : 0;
 
             for (let i = startIndex; i < rows.length; i++) {
                 const fila = rows[i];
@@ -462,9 +714,9 @@
                 if (String(fila[0]).trim() === numero) {
                     return {
                         numero: fila[0],
-                        recurso: fila[1],
-                        fecha: fila[2],
-                        mensaje: fila[3]
+                        recurso: fila[1] || 'N/A',
+                        fecha: fila[2] || 'N/A',
+                        mensaje: fila[3] || 'N/A'
                     };
                 }
             }
@@ -472,11 +724,14 @@
             return null;
         }
 
-        // Función para mostrar resultado
+        /**
+         * Mostrar resultado de búsqueda
+         */
         function mostrarResultado(resultado) {
             const resultSection = document.getElementById('resultSection');
             const diasTranscurridos = calcularDiasTranscurridos(resultado.fecha);
-            const enGarantia = diasTranscurridos <= 60;
+            const periodoGarantia = 60;
+            const enGarantia = diasTranscurridos >= 0 && diasTranscurridos <= periodoGarantia;
             const fechaFormato = formatearFecha(resultado.fecha);
 
             // Determinar tipo de resultado
@@ -486,73 +741,145 @@
             resultSection.className = `result-section show ${tipoResultado}`;
 
             const titulo = enGarantia 
-                ? 'En Garantía' 
-                : 'Fuera de Garantía';
+                ? 'Recurso En Garantía' 
+                : 'Fuera de Período de Garantía';
+
+            let diasRestantes = periodoGarantia - diasTranscurridos;
+            let diasVencidos = diasTranscurridos - periodoGarantia;
 
             let contenidoHtml = `
-                <div class="result-item">
-                    <div class="result-item-label">Número de Recurso</div>
-                    <div class="result-item-value">${resultado.numero}</div>
-                </div>
+                <div class="result-items">
+                    <div class="result-item">
+                        <div class="result-item-label">📌 Número de Recurso</div>
+                        <div class="result-item-value">${resultado.numero}</div>
+                    </div>
 
-                <div class="result-item">
-                    <div class="result-item-label">Recurso</div>
-                    <div class="result-item-value">${resultado.recurso}</div>
-                </div>
+                    <div class="result-item">
+                        <div class="result-item-label">🏷️ Tipo de Recurso</div>
+                        <div class="result-item-value">${resultado.recurso}</div>
+                    </div>
 
-                <div class="result-item">
-                    <div class="result-item-label">Fecha de Registro</div>
-                    <div class="result-item-value">${fechaFormato}</div>
-                    <div class="days-info">Días transcurridos: ${diasTranscurridos}</div>
-                </div>
+                    <div class="result-item">
+                        <div class="result-item-label">📅 Fecha de Registro</div>
+                        <div class="result-item-value">${fechaFormato}</div>
+                    </div>
 
-                <div class="result-item">
-                    <div class="result-item-label">Estado de Garantía</div>
-                    <div>
+                    <div class="result-item">
+                        <div class="result-item-label">⏱️ Días Transcurridos</div>
+                        <div class="result-item-value">${diasTranscurridos} días</div>
+                    </div>
+
+                    <div class="result-item result-item-full">
+                        <div class="result-item-label">🛡️ Estado de Garantía</div>
                         <span class="guarantee-badge ${enGarantia ? 'active' : 'expired'}">
-                            ${enGarantia ? '✓ EN GARANTÍA' : '✗ FUERA DE GARANTÍA'}
+                            ${enGarantia ? '✓ EN GARANTÍA' : '✗ VENCIDA'}
                         </span>
                         <div class="days-info">
                             ${enGarantia 
-                                ? `Días restantes: ${60 - diasTranscurridos}` 
-                                : `Vencida hace ${diasTranscurridos - 60} días`
+                                ? `<strong>Días restantes:</strong> ${diasRestantes} días` 
+                                : `<strong>Vencida hace:</strong> ${diasVencidos} días`
                             }
                         </div>
                     </div>
+
+                    <div class="result-item result-item-full">
+                        <div class="result-item-label">💬 Observaciones</div>
+                        <div class="result-item-value">${resultado.mensaje}</div>
+                    </div>
                 </div>
 
-                <div class="result-item">
-                    <div class="result-item-label">Mensaje</div>
-                    <div class="result-item-value">${resultado.mensaje || 'N/A'}</div>
+                <div class="additional-info">
+                    ${enGarantia 
+                        ? `<p><strong>✓ Estado Activo:</strong> El producto está dentro del período de garantía de ${periodoGarantia} días naturales. Aún tienes <strong>${diasRestantes} días</strong> de cobertura garantizada.</p>`
+                        : `<p><strong>✗ Estado Vencido:</strong> El producto ha superado el período de garantía de ${periodoGarantia} días naturales. La garantía venció hace <strong>${diasVencidos} días</strong>. Para soporte adicional, contacta con el equipo técnico.</p>`
+                    }
                 </div>
-
-                ${enGarantia 
-                    ? '<div class="result-item"><div class="result-item-value" style="color: #28a745; font-weight: 600;">✓ El producto está dentro del período de garantía de 60 días naturales</div></div>'
-                    : '<div class="result-item"><div class="result-item-value" style="color: #dc3545; font-weight: 600;">✗ El producto ha superado el período de garantía de 60 días naturales</div></div>'
-                }
             `;
 
             document.getElementById('resultTitle').innerHTML = `${icon} ${titulo}`;
             document.getElementById('resultContent').innerHTML = contenidoHtml;
         }
 
-        // Función para mostrar no encontrado
+        /**
+         * Mostrar mensaje de no encontrado
+         */
         function mostrarNoEncontrado(numero) {
             const resultSection = document.getElementById('resultSection');
             resultSection.className = 'result-section show error';
-            document.getElementById('resultTitle').innerHTML = '❌ No Encontrado';
+            document.getElementById('resultTitle').innerHTML = '❌ Recurso No Encontrado';
             document.getElementById('resultContent').innerHTML = `
                 <div class="no-result">
                     <div class="no-result-icon">🔍</div>
                     <p>No se encontró ningún recurso con el número: <strong>${numero}</strong></p>
-                    <p style="margin-top: 10px; font-size: 0.9em;">Por favor verifica que el número sea correcto e intenta de nuevo.</p>
+                    <p style="margin-top: 15px; font-size: 0.95em; color: #666;">
+                        Por favor verifica que el número sea correcto e intenta de nuevo.<br>
+                        Si crees que esto es un error, contacta con soporte.
+                    </p>
                 </div>
             `;
         }
 
-        // Enfocar en el input al cargar
+        /**
+         * Función principal de búsqueda
+         */
+        async function buscar() {
+            const numero = document.getElementById('numeroInput').value.trim();
+
+            if (!numero) {
+                mostrarMensaje('❌ Por favor ingresa un número de recurso', 'error');
+                return;
+            }
+
+            // Validar que sea un número válido (opcional)
+            if (!/^[0-9a-zA-Z-]+$/.test(numero)) {
+                mostrarMensaje('❌ El número debe contener solo letras, números y guiones', 'error');
+                return;
+            }
+
+            const btnBuscar = event.target;
+            const btnOriginalText = btnBuscar.innerHTML;
+            btnBuscar.disabled = true;
+            btnBuscar.innerHTML = '<span class="loading-spinner"></span> Buscando...';
+
+            mostrarMensaje('🔄 Consultando base de datos...', 'loading', 0);
+
+            try {
+                // Obtener datos (usar caché si es reciente)
+                let rows = cachedData;
+                if (!rows || (lastDataFetch && new Date() - lastDataFetch > 5 * 60 * 1000)) {
+                    // Si no hay caché o tiene más de 5 minutos, obtener datos nuevos
+                    rows = await obtenerDatosDelSheet();
+                }
+
+                // Buscar el registro
+                const resultado = buscarEnDatos(numero, rows);
+
+                if (resultado && resultado.fecha !== 'N/A') {
+                    mostrarResultado(resultado);
+                    mostrarMensaje('✅ Búsqueda completada exitosamente', 'success');
+                } else {
+                    mostrarNoEncontrado(numero);
+                    mostrarMensaje('❌ No se encontró el número solicitado', 'error');
+                }
+
+            } catch (error) {
+                console.error('Error en la búsqueda:', error);
+                mostrarMensaje(`❌ ${error.message}`, 'error');
+            } finally {
+                btnBuscar.disabled = false;
+                btnBuscar.innerHTML = btnOriginalText;
+            }
+        }
+
+        /**
+         * Inicialización
+         */
         window.addEventListener('load', () => {
             document.getElementById('numeroInput').focus();
+            // Intentar cargar datos una sola vez al cargar la página
+            obtenerDatosDelSheet().catch(error => {
+                console.warn('Advertencia al cargar datos iniciales:', error);
+            });
         });
     </script>
 </body>
