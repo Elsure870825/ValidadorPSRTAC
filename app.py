@@ -23,7 +23,7 @@ def cargar_datos_sheets():
     client = gspread.authorize(creds)
     sheet_id = "10qZbXp4ayXjtITenLXaj7_E2y176O7JB28k28EcmbbM"
     documento = client.open_by_key(sheet_id)
-    hoja = documento.get_sheet_by_id(0)
+    hoja = documento.get_worksheet(0) 
     
     data = hoja.get_all_records()
     return pd.DataFrame(data)
