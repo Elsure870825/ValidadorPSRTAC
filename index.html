@@ -43,7 +43,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.1)"/></svg>');
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
             pointer-events: none;
         }
 
@@ -422,33 +422,6 @@
             text-decoration: underline;
         }
 
-        /* ========== STATISTICS ========== */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: 800;
-        }
-
-        .stat-label {
-            font-size: 0.85em;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .header h1 {
@@ -468,10 +441,6 @@
             }
 
             .result-items {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-container {
                 grid-template-columns: 1fr;
             }
 
@@ -524,7 +493,7 @@
             <div class="info-banner">
                 <div class="info-banner-icon">ℹ️</div>
                 <div class="info-banner-text">
-                    <strong>Importante:</strong> Ingresa el número de tu cliente para verificar el estado actual de garantía. El período de garantía es de <strong>60 días naturales</strong> a partir de la fecha de registro.
+                    <strong>Importante:</strong> Ingresa el número de recurso para verificar el estado actual de garantía. El período de garantía es de <strong>60 días naturales</strong> desde la fecha de registro.
                 </div>
             </div>
 
@@ -564,8 +533,8 @@
         // ========== CONFIGURACIÓN ========== 
         const SPREADSHEET_ID = '10qZbXp4ayXjtITenLXaj7_E2y176O7JB28k28EcmbbM';
         const SHEET_NAME = 'Sheet1';
-        // Para hojas públicas, la API Key es opcional. Sino, reemplaza con tu API Key:
-        const API_KEY = ''; // Déjalo vacío si la hoja es pública, o agrega tu API Key de Google Cloud
+        // La hoja está pública, no requiere API Key
+        const API_KEY = '';
 
         let cachedData = null;
         let lastDataFetch = null;
@@ -601,7 +570,25 @@
          */
         function calcularDiasTranscurridos(fechaStr) {
             try {
-                const fechaRegistro = new Date(fechaStr);
+                // Soportar múltiples formatos de fecha
+                let fechaRegistro;
+                
+                // Intentar parsear como ISO (YYYY-MM-DD)
+                if (fechaStr.includes('-')) {
+                    fechaRegistro = new Date(fechaStr);
+                } 
+                // Intentar parsear como DD/MM/YYYY
+                else if (fechaStr.includes('/')) {
+                    const partes = fechaStr.split('/');
+                    if (partes.length === 3) {
+                        fechaRegistro = new Date(partes[2], partes[1] - 1, partes[0]);
+                    } else {
+                        throw new Error('Formato de fecha no válido');
+                    }
+                } else {
+                    throw new Error('Formato de fecha no reconocido');
+                }
+                
                 const hoy = new Date();
                 
                 fechaRegistro.setHours(0, 0, 0, 0);
@@ -622,7 +609,24 @@
          */
         function formatearFecha(fechaStr) {
             try {
-                const fecha = new Date(fechaStr);
+                let fecha;
+                
+                // Intentar parsear como ISO
+                if (fechaStr.includes('-')) {
+                    fecha = new Date(fechaStr);
+                } 
+                // Intentar parsear como DD/MM/YYYY
+                else if (fechaStr.includes('/')) {
+                    const partes = fechaStr.split('/');
+                    if (partes.length === 3) {
+                        fecha = new Date(partes[2], partes[1] - 1, partes[0]);
+                    } else {
+                        return fechaStr;
+                    }
+                } else {
+                    return fechaStr;
+                }
+                
                 return fecha.toLocaleDateString('es-ES', { 
                     year: 'numeric', 
                     month: 'long', 
@@ -651,28 +655,28 @@
 
         /**
          * Obtener datos del Google Sheet
+         * La hoja está pública y accesible sin autenticación
          */
         async function obtenerDatosDelSheet() {
             try {
-                const range = `${SHEET_NAME}!A:D`;
-                const urlParams = new URLSearchParams({
-                    key: API_KEY
-                });
-
+                // Solicitar desde columna A hasta J
+                const range = `${SHEET_NAME}!A:J`;
+                
                 let url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}`;
                 if (API_KEY) {
                     url += `?key=${API_KEY}`;
                 }
 
+                console.log('Conectando con Google Sheets...');
                 const response = await fetch(url);
 
                 if (!response.ok) {
                     if (response.status === 403) {
-                        throw new Error('Acceso denegado. Verifica que la hoja sea pública o que la API Key sea válida.');
+                        throw new Error('❌ Acceso denegado a la Google Sheet. Verifica que esté compartida públicamente.');
                     } else if (response.status === 404) {
-                        throw new Error('Google Sheet no encontrado. Verifica el ID de la hoja.');
+                        throw new Error('❌ Google Sheet no encontrada. ID: ' + SPREADSHEET_ID);
                     } else {
-                        throw new Error(`Error al conectar con Google Sheets: ${response.status}`);
+                        throw new Error(`❌ Error HTTP ${response.status}: ${response.statusText}`);
                     }
                 }
 
@@ -680,7 +684,7 @@
                 const rows = data.values || [];
 
                 if (rows.length === 0) {
-                    throw new Error('La base de datos está vacía. Verifica que la hoja tenga datos.');
+                    throw new Error('❌ La Google Sheet está vacía.');
                 }
 
                 // Cachear datos
@@ -688,35 +692,38 @@
                 lastDataFetch = new Date();
                 document.getElementById('lastUpdate').textContent = formatearFechaCorta(lastDataFetch);
 
+                console.log('✅ Datos cargados:', rows.length, 'filas');
                 return rows;
 
             } catch (error) {
-                console.error('Error al obtener datos:', error);
+                console.error('Error:', error);
                 throw error;
             }
         }
 
         /**
          * Buscar un registro en los datos
+         * Columna A (índice 0): Número de Recurso
+         * Columna F (índice 5): Teléfono
+         * Columna J (índice 9): Fecha
          */
         function buscarEnDatos(numero, rows) {
-            // Saltar encabezado si existe
-            const startIndex = rows[0]?.some(cell => 
-                String(cell).toLowerCase().includes('número') || 
-                String(cell).toLowerCase().includes('numero')
-            ) ? 1 : 0;
+            // Saltar encabezado (primera fila)
+            const startIndex = 1;
 
             for (let i = startIndex; i < rows.length; i++) {
                 const fila = rows[i];
                 if (!fila || fila.length === 0) continue;
 
-                // Buscar en la primera columna (Número)
-                if (String(fila[0]).trim() === numero) {
+                // Comparar números de recurso
+                const numeroFila = String(fila[0] || '').trim();
+                const numeroBuscado = String(numero).trim();
+
+                if (numeroFila === numeroBuscado) {
                     return {
-                        numero: fila[0],
-                        recurso: fila[1] || 'N/A',
-                        fecha: fila[2] || 'N/A',
-                        mensaje: fila[3] || 'N/A'
+                        numero: fila[0] || 'N/A',
+                        telefono: fila[5] || 'N/A',  // Columna F
+                        fecha: fila[9] || 'N/A'      // Columna J
                     };
                 }
             }
@@ -755,8 +762,8 @@
                     </div>
 
                     <div class="result-item">
-                        <div class="result-item-label">🏷️ Tipo de Recurso</div>
-                        <div class="result-item-value">${resultado.recurso}</div>
+                        <div class="result-item-label">📞 Teléfono de la Tarea</div>
+                        <div class="result-item-value">${resultado.telefono}</div>
                     </div>
 
                     <div class="result-item">
@@ -781,17 +788,12 @@
                             }
                         </div>
                     </div>
-
-                    <div class="result-item result-item-full">
-                        <div class="result-item-label">💬 Observaciones</div>
-                        <div class="result-item-value">${resultado.mensaje}</div>
-                    </div>
                 </div>
 
                 <div class="additional-info">
                     ${enGarantia 
-                        ? `<p><strong>✓ Estado Activo:</strong> El producto está dentro del período de garantía de ${periodoGarantia} días naturales. Aún tienes <strong>${diasRestantes} días</strong> de cobertura garantizada.</p>`
-                        : `<p><strong>✗ Estado Vencido:</strong> El producto ha superado el período de garantía de ${periodoGarantia} días naturales. La garantía venció hace <strong>${diasVencidos} días</strong>. Para soporte adicional, contacta con el equipo técnico.</p>`
+                        ? `<p><strong>✓ Estado Activo:</strong> El producto está dentro del período de garantía de ${periodoGarantia} días naturales. Aún tienes <strong>${diasRestantes} día(s)</strong> de cobertura restante.</p>`
+                        : `<p><strong>✗ Estado Vencido:</strong> El producto ha superado el período de garantía de ${periodoGarantia} días naturales. La garantía venció hace <strong>${diasVencidos} día(s)</strong>.</p>`
                     }
                 </div>
             `;
@@ -830,7 +832,7 @@
                 return;
             }
 
-            // Validar que sea un número válido (opcional)
+            // Validar formato
             if (!/^[0-9a-zA-Z-]+$/.test(numero)) {
                 mostrarMensaje('❌ El número debe contener solo letras, números y guiones', 'error');
                 return;
@@ -844,10 +846,9 @@
             mostrarMensaje('🔄 Consultando base de datos...', 'loading', 0);
 
             try {
-                // Obtener datos (usar caché si es reciente)
+                // Obtener datos (usar caché si es reciente - menos de 5 minutos)
                 let rows = cachedData;
                 if (!rows || (lastDataFetch && new Date() - lastDataFetch > 5 * 60 * 1000)) {
-                    // Si no hay caché o tiene más de 5 minutos, obtener datos nuevos
                     rows = await obtenerDatosDelSheet();
                 }
 
@@ -863,8 +864,8 @@
                 }
 
             } catch (error) {
-                console.error('Error en la búsqueda:', error);
-                mostrarMensaje(`❌ ${error.message}`, 'error');
+                console.error('Error en búsqueda:', error);
+                mostrarMensaje(`${error.message}`, 'error', 10000);
             } finally {
                 btnBuscar.disabled = false;
                 btnBuscar.innerHTML = btnOriginalText;
@@ -872,13 +873,14 @@
         }
 
         /**
-         * Inicialización
+         * Inicialización al cargar la página
          */
         window.addEventListener('load', () => {
             document.getElementById('numeroInput').focus();
-            // Intentar cargar datos una sola vez al cargar la página
+            // Cargar datos al inicializar
             obtenerDatosDelSheet().catch(error => {
-                console.warn('Advertencia al cargar datos iniciales:', error);
+                console.warn('⚠️ Advertencia:', error.message);
+                mostrarMensaje(`⚠️ ${error.message}`, 'error', 0);
             });
         });
     </script>
