@@ -533,8 +533,7 @@
         // ========== CONFIGURACIÓN ========== 
         const SPREADSHEET_ID = '10qZbXp4ayXjtITenLXaj7_E2y176O7JB28k28EcmbbM';
         const SHEET_NAME = 'Sheet1';
-        // La hoja está pública, no requiere API Key
-        const API_KEY = '';
+        const API_KEY = 'AIzaSyCzs0HGyAZiOwCXGKdYBjg3a37nzeRYSc0';
 
         let cachedData = null;
         let lastDataFetch = null;
@@ -654,25 +653,21 @@
         }
 
         /**
-         * Obtener datos del Google Sheet
-         * La hoja está pública y accesible sin autenticación
+         * Obtener datos del Google Sheet con API Key
          */
         async function obtenerDatosDelSheet() {
             try {
                 // Solicitar desde columna A hasta J
                 const range = `${SHEET_NAME}!A:J`;
                 
-                let url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}`;
-                if (API_KEY) {
-                    url += `?key=${API_KEY}`;
-                }
+                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}?key=${API_KEY}`;
 
-                console.log('Conectando con Google Sheets...');
+                console.log('🔄 Conectando con Google Sheets...');
                 const response = await fetch(url);
 
                 if (!response.ok) {
                     if (response.status === 403) {
-                        throw new Error('❌ Acceso denegado a la Google Sheet. Verifica que esté compartida públicamente.');
+                        throw new Error('❌ Acceso denegado a la Google Sheet. Verifica la configuración de permisos.');
                     } else if (response.status === 404) {
                         throw new Error('❌ Google Sheet no encontrada. ID: ' + SPREADSHEET_ID);
                     } else {
