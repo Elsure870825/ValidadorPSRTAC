@@ -32,7 +32,7 @@ def cargar_datos_sheets():
 # Configuración Web optimizada para teléfonos celulares
 st.set_page_config(page_title="Validador de Garantías PSR", page_icon="🛡️", layout="centered")
 st.title("🛡️ Buscador y Validador de Garantías PSR")
-st.caption("Consulta rápida de estatus de garantías.")
+st.caption("Consulta rápida de estatus de garantías PSR.")
 
 try:
     df_base = cargar_datos_sheets()
@@ -40,7 +40,7 @@ try:
     st.markdown("---")
     
     # Entrada de búsqueda interactiva
-    busqueda = st.text_input("Ingresa el número telefónico o Folio PISA a consultar:", placeholder="Ej. 2291555848")
+    busqueda = st.text_input("Ingresa el número telefónico a consultar:", placeholder="Ej. 2291555848")
     
     if busqueda:
         busqueda_clean = str(busqueda).strip()
