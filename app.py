@@ -5,23 +5,25 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # Conectar con la Google Sheet usando los Secrets de la Nube
-@st.cache_data(ttl=15) # Caché de 15 segundos para actualización rápida de datos
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import pandas as pd
+
+@st.cache_data(ttl=15)
 def cargar_datos_sheets():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     
-    # MODIFICACIÓN CRÍTICA: Leer desde los Secrets que configuraste en la web
     if "gcp_service_account" in st.secrets:
         creds_dict = dict(st.secrets["gcp_service_account"])
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     else:
-        # Respaldo por si algún día lo pruebas de manera local en tu PC
         creds = ServiceAccountCredentials.from_json_keyfile_name("credenciales.json", scope)
         
     client = gspread.authorize(creds)
-    
     sheet_id = "10qZbXp4ayXjtITenLXaj7_E2y176O7JB28k28EcmbbM"
     documento = client.open_by_key(sheet_id)
-    hoja = documento.get_sheet_by_id(0) # primera pestaña (gid=0)
+    hoja = documento.get_sheet_by_id(0)
     
     data = hoja.get_all_records()
     return pd.DataFrame(data)
