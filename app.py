@@ -31,7 +31,7 @@ def cargar_datos_sheets():
 
 # Configuración Web optimizada para teléfonos celulares
 st.set_page_config(page_title="Validador de Garantías PSR", page_icon="🛡️", layout="centered")
-st.title("🛡️ Buscador y Validador de Garantías TAC")
+st.title("🛡️ Buscador y Validador de Garantías PSR")
 st.caption("Consulta rápida de estatus de garantías.")
 
 try:
