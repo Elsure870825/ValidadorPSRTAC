@@ -1,8 +1,8 @@
 {
   "googleCloud": {
     "projectId": "validador-psr",
-    "apiKey": "YOUR_PUBLIC_API_KEY_HERE",
-    "clientId": "YOUR_CLIENT_ID_HERE.apps.googleusercontent.com",
+    "apiKey": "AIzaSyCzs0HGyAZiOwCXGKdYBjg3a37nzeRYSc0",
+    "clientId": "validador-tac@validador-psr.iam.gserviceaccount.com",
     "authUri": "https://accounts.google.com/o/oauth2/auth",
     "tokenUri": "https://oauth2.googleapis.com/token",
     "universe_domain": "googleapis.com"
